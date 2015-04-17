@@ -1,5 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_filter :admin_only_allowed, only: [:index, :show, :edit, :new]
 
   # GET /projects
   # GET /projects.json
@@ -10,7 +11,6 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    #@tasks = Task.find(@project.id)
     @tasks = Task.where(params[:project])
   end
 
@@ -26,15 +26,18 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @project = Project.new(project_params)
+    if current_user.admin?
 
-    respond_to do |format|
-      if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @project }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+      @project = Project.new(project_params)
+
+      respond_to do |format|
+        if @project.save
+          format.html { redirect_to @project, notice: 'Project was successfully created.' }
+          format.json { render action: 'show', status: :created, location: @project }
+        else
+          format.html { render action: 'new' }
+          format.json { render json: @project.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
