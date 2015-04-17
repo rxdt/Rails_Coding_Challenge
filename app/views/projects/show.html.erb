@@ -5,5 +5,16 @@
   <%= @project.name %>
 </p>
 
-<%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', projects_path %>
+<div>
+  <% @tasks.each do |t| %>
+    <%= t.name %>
+    <%= t.difficulty %>
+    <%= link_to 'Edit Task', edit_project_task_path(@project, t) %>
+    <br>
+  <% end %>
+</div>
+<br>
+
+<%= link_to 'Edit Project', edit_project_path(@project) %> |
+<%= link_to 'Back', projects_path %> |
+<%= link_to 'New Task', new_project_task_path(@project) %>
