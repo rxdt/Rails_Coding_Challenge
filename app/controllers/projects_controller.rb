@@ -1,6 +1,7 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
   before_filter :admin_only_allowed, only: [:index, :show, :edit, :new]
+  before_filter :is_owner, only: [:edit, :destroy]
 
   # GET /projects
   # GET /projects.json
