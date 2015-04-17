@@ -17,3 +17,6 @@
 
 /app/config/database.yml
 .console_history
+
+Gemfile.lock
+/vendor
