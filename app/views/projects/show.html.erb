@@ -1,23 +1,30 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @project.name %>
-</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th><strong>Task Name:</strong></th>
+      <th><strong>Difficulty:</strong></th>
+    </tr>
+  </thead>
 
-<div>
-  <br>
-  <% @tasks.each do |t| %>
-    <%= t.name %>
-    <%= t.difficulty %>
-    <%= link_to 'Edit', edit_project_task_path(@project, t) %>  |
-    <%= link_to 'Details', project_task_path(@project, t) %>  |
-    <%= link_to 'Delete', project_task_path(@project, t), method: :delete %>
-  <br>
-  <% end %>
-</div>
-<br>
+  <tbody>
+    <% @tasks.each do |t| %>
+      <tr>
+        <td><%= t.name %></td>
+        <td><%= t.difficulty %></td>
+        <td>
+          <%= link_to 'Edit', edit_project_task_path(@project, t), class: 'btn' %>
+          <%= link_to 'Details', project_task_path(@project, t), class: 'btn' %>
+          <%= link_to 'Delete', project_task_path(@project, t), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'  %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <%= link_to 'Edit Project', edit_project_path(@project) %> |
 <%= link_to 'Back', projects_path %> |
 <%= link_to 'New Task', new_project_task_path(@project) %>
+
+<div id="task-form" style="display:none;"></div>

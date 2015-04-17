@@ -1,12 +1,15 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy, :is_owner]
-  before_filter :admin_only_allowed, only: [:index, :show, :edit, :new]
 
   #  if is owner of this project, can edit or delete project
   before_filter :is_owner, only: [:edit, :destroy] 
 
+  respond_to :html, :js
+
   def is_owner
-    redirect_to('/projects') if current_user == nil || current_user.id != @project.user_id
+    if current_user.id != @project.user_id 
+      redirect_to('/projects') 
+    end
   end
 
   # GET /projects
@@ -19,6 +22,10 @@ class ProjectsController < ApplicationController
   # GET /projects/1.json
   def show
     @tasks = Task.where(project_id: @project)
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   # GET /projects/new
@@ -33,20 +40,17 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    if current_user.admin?
+    @project = Project.new(project_params)
+    @project.user = current_user
 
-      @project = Project.new(project_params)
-
-      respond_to do |format|
-        if @project.save
-          format.html { redirect_to @project, notice: 'Project was successfully created.' }
-          format.json { render action: 'show', status: :created, location: @project }
-        else
-          format.html { render action: 'new' }
-          format.json { render json: @project.errors, status: :unprocessable_entity }
-        end
+    respond_to do |format|
+      if @project.save
+        format.html { redirect_to @project, notice: 'Project was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @project }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @project.errors, status: :unprocessable_entity }
       end
-
     end
   end
 
