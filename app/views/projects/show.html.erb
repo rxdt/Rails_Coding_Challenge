@@ -6,11 +6,14 @@
 </p>
 
 <div>
+  <br>
   <% @tasks.each do |t| %>
     <%= t.name %>
     <%= t.difficulty %>
-    <%= link_to 'Edit Task', edit_project_task_path(@project, t) %>
-    <br>
+    <%= link_to 'Edit', edit_project_task_path(@project, t) %>  |
+    <%= link_to 'Details', project_task_path(@project, t) %>  |
+    <%= link_to 'Delete', project_task_path(@project, t), method: :delete %>
+  <br>
   <% end %>
 </div>
 <br>

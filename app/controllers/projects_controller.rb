@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @tasks = Task.where(params[:project])
+    @tasks = Task.where(project_id: @project)
   end
 
   # GET /projects/new
@@ -46,7 +46,7 @@ class ProjectsController < ApplicationController
           format.json { render json: @project.errors, status: :unprocessable_entity }
         end
       end
-      
+
     end
   end
 
