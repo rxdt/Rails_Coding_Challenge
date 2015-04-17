@@ -1,7 +1,13 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :is_owner]
   before_filter :admin_only_allowed, only: [:index, :show, :edit, :new]
-  before_filter :is_owner, only: [:edit, :destroy]
+
+  #  if is owner of this project, can edit or delete project
+  before_filter :is_owner, only: [:edit, :destroy] 
+
+  def is_owner
+    redirect_to('/projects') if current_user == nil || current_user.id != @project.user_id
+  end
 
   # GET /projects
   # GET /projects.json
@@ -40,6 +46,7 @@ class ProjectsController < ApplicationController
           format.json { render json: @project.errors, status: :unprocessable_entity }
         end
       end
+      
     end
   end
 

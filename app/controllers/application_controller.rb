@@ -6,8 +6,4 @@ class ApplicationController < ActionController::Base
   def admin_only_allowed
     redirect_to('/') if current_user == nil || !current_user.admin 
   end
-
-  def is_owner
-    redirect_to('/projects') if current_user == nil || !current_user.owner
-  end
 end
